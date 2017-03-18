@@ -124,6 +124,22 @@ function tmin(tbl, comparer)
 	return result;
 end
 
+-- 内/外函数：判断两个数组是否一致
+function tequals(tbl1, tbl2)
+	local tbl1Length = table.getn(tbl1);
+	local tbl2Length = table.getn(tbl2);
+	local result = tbl1Length == tbl2Length;
+	if (result) then
+		for i = 1, tbl1Length do
+			if (tbl1[i] ~= tbl2[i]) then
+				result = false;
+				break;
+			end
+		end
+	end
+	return result;
+end
+
 -- 内/外函数：判断背包空余格数。
 function GetContainerFreeSlotCount()
 	local result = 0;
