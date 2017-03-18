@@ -2,51 +2,6 @@
 local type = type;
 local format = string.format;
 
-------------------------------------------------------------
--- Cache
-------------------------------------------------------------
-local factoryCache = {};
--- ... = GetOrCreateWithCache(name, factory, expiry) - 获取缓存的或创建新的一个或多个值
-function GetOrCreateWithCache(name, factory, expiry)
-	ValidateArgument("name", name, "string");
-	ValidateArgument("factory", factory, "function");
-	ValidateArgument("expiry", expiry, "number");
-	local factoryCacheEntry = factoryCache[name];
-	if (not factoryCacheEntry or GetTime() - factoryCacheEntry.Time >= expiry) then
-		factoryCacheEntry = {
-			Time = GetTime(),
-			Values = {factory()}
-		};
-		factoryCache[name] = factoryCacheEntry;
-	end
-	return unpack(factoryCacheEntry.Values);
-end
-------------------------------------------------------------
-
-------------------------------------------------------------
--- Execute
-------------------------------------------------------------
-local cooldownTimers = {};
--- ExecuteWithCooldown(name, action, cooldown) - 按一定冷却间隔执行一个动作
-function ExecuteWithCooldown(name, action, cooldown)
-	ValidateArgument("name", name, "string");
-	ValidateArgument("action", action, "function");
-	ValidateArgument("cooldown", cooldown, "number");
-	local cooldownTimer = cooldownTimers[name];
-	if (not cooldownTimer or GetTime() - cooldownTimer >= cooldown) then
-		action();
-		cooldownTimers[name] = GetTime();
-	end
-end
--- IsExecutedWithCooldown(name, cooldown) - 判断指定动作是否已执行并进入冷却
-function IsExecutedWithCooldown(name, cooldown)
-	ValidateArgument("name", name, "string");
-	ValidateArgument("cooldown", cooldown, "number");
-	local cooldownTimer = cooldownTimers[name];
-	return cooldownTimer and GetTime() - cooldownTimer < cooldown;
-end
-------------------------------------------------------------
-
 -- 内部函数：校验参数。
 function ValidateArgument(argumentName, argumentValue, expectedType, validatorFunction)
     local isValid = (not expectedType or type(argumentValue) == expectedType) and (type(validatorFunction) ~= "function" or validatorFunction(argumentValue));
@@ -92,6 +47,15 @@ function print(...)
 		end
 		message = string.sub(message, 2);
 		DEFAULT_CHAT_FRAME:AddMessage(message);
+	end
+end
+
+-- 内/外函数：获取本地化文本。
+function GetLocalizedText(englishText, chineseText)
+	if (GetLocale() == "zhCN") then
+		return chineseText;
+	else
+		return englishText;
 	end
 end
 
