@@ -2405,3 +2405,19 @@ Spells["Blessing of Freedom"] = {
 Spells["自由祝福"] = {
     [1] = 1044
 };
+
+--------------------------------------------------------------------
+-- 剥皮
+--------------------------------------------------------------------
+Spells["Apprentice Skinning"] = {
+    [1] = 8615
+};
+Spells["Journeyman Skinning"] = {
+    [1] = 8619
+};
+Spells["Expert Skinning"] = {
+    [1] = 8620
+};
+Spells["Artisan Skinning"] = {
+    [1] = 10769
+};
