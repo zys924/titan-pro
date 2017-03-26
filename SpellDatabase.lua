@@ -2412,12 +2412,24 @@ Spells["自由祝福"] = {
 Spells["Apprentice Skinning"] = {
     [1] = 8615
 };
+Spells["初级剥皮"] = {
+    [1] = 8615
+};
 Spells["Journeyman Skinning"] = {
+    [1] = 8619
+};
+Spells["中级剥皮"] = {
     [1] = 8619
 };
 Spells["Expert Skinning"] = {
     [1] = 8620
 };
+Spells["高级剥皮"] = {
+    [1] = 8620
+};
 Spells["Artisan Skinning"] = {
+    [1] = 10769
+};
+Spells["大师级剥皮"] = {
     [1] = 10769
 };
