@@ -1,6 +1,4 @@
---------------------------------------------------------------------------------
 -- Killer Helpers
---------------------------------------------------------------------------------
 local function CompareHealthForHealingPriority(member1, member2)
     return UnitHealth(member1) / UnitHealthMax(member1) < UnitHealth(member2) / UnitHealthMax(member2);
 end
@@ -41,11 +39,7 @@ local function GetMembersToBeHealedInPriority(healthThreshold)
     end
     return results, membersUnderAttack, otherMembers;
 end
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
 -- Killers
---------------------------------------------------------------------------------
 MageFireKiller = {
     Action = function(npc)
         if (MC.GetActualDistance("player", npc) < 3) then
@@ -281,4 +275,3 @@ WarriorKiller = {
         end
     end,
 };
---------------------------------------------------------------------------------
