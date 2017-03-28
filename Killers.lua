@@ -215,6 +215,7 @@ WarriorKiller = {
         else
             MC.StopAutoAttacking();
         end
+        local npcHealth = UnitHealth(npc) / UnitHealthMax(npc);
         -- 冲锋
         if (not UnitAffectingCombat("player") and MC.TryCast("冲锋", nil, npc)) then
             return;
@@ -231,9 +232,21 @@ WarriorKiller = {
                 return;
             end
         end
+        -- 断筋
+        local isRendLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
+        if (isRendLearnt) then
+            local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "断筋");
+            if (not rendRemainingTime) then
+                _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Rend");
+            end
+            if (not rendRemainingTime or rendRemainingTime < 3) then
+                MC.TryCast("断筋", nil, npc);
+                return;
+            end
+        end
         -- 撕裂
         local isRendLearnt = MC.GetSpellId("撕裂", nil, true) ~= nil;
-        if (isRendLearnt) then
+        if (isRendLearnt and npcHealth > 0.5) then
             local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "撕裂");
             if (not rendRemainingTime) then
                 _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Rend");
