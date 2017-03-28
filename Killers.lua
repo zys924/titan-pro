@@ -265,7 +265,7 @@ WarriorKiller = {
             end
         end
         -- 英勇打击
-        if (not isRendLearnt or UnitAura("player") > 30) then
+        if (not isRendLearnt or UnitMana("player") > 20) then
             if (MC.TryCast("英勇打击", nil, npc)) then
                 return;
             end
