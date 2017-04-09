@@ -288,3 +288,31 @@ WarriorKiller = {
         end
     end,
 };
+RogueKiller = {
+    Action = function(npc)
+        if (MC.GetActualDistance("player", npc) < 3) then
+            MC.StartAutoAttacking();
+        else
+            MC.StopAutoAttacking();
+        end
+        local npcHealth = UnitHealth(npc) / UnitHealthMax(npc);
+        local comboPoints = GetComboPoints();
+        -- 剔骨
+        if (comboPoints > 2 and npcHealth < 0.5 or comboPoints > 3) then
+            MC.TryCast("剔骨", nil, npc);
+            return;
+        end
+        -- 背刺
+        local mainHandWeapon = SR.GetInventoryItem(16);
+        if (mainHandWeapon and mainHandWeapon.SubType == "Daggers" and MC.IsFacingBack("player", npc) and MC.IsCastable("背刺", nil, npc)) then
+            MC.Cast("背刺", nil, npc);
+            return;
+        end
+        -- 邪恶攻击
+        if (MC.TryCast("邪恶攻击", nil, npc)) then
+            return;
+        end
+    end,
+    LowerDistanceCalculator = function() return 3 end,
+    UpperDistanceCalculator = function() return 4 end,
+};
