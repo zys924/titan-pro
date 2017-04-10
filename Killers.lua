@@ -42,20 +42,25 @@ end
 -- Killers
 MageKiller = {
     Action = function(npc)
-        if (MC.GetActualDistance("player", npc) < 3) then
+        -- 获取基本信息
+        local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
+        local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
+        local npcTarget = GetUnitTarget(npc);
+        local isTargetingMe = npcTarget and UnitIsUnit(npcTarget, "player");
+        local hasFrostboltDebuff = MC.GetUnitAuraByName(npc, "寒冰箭") or MC.GetUnitAuraByName(npc, "Frostbolt");
+        -- 近战范围内展开自动攻击。
+        if (MC.GetActualDistance("player", npc) < 5) then
             MC.StartAutoAttacking();
         else
             MC.StopAutoAttacking();
         end
-        local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
-        local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
-        if (not UnitAffectingCombat(npc)) then
-            -- 如果目标没有进入战斗，则用寒冰箭开局。
+        if ((not UnitAffectingCombat(npc) or not isTargetingMe) and not hasFrostboltDebuff) then
+            -- 如果目标没有进入战斗或者当前目标不是我，而且身上没有寒冰箭DEBUFF，则用寒冰箭开局。
             MC.TryCast("Frostbolt", nil, npc);
             ResetAfkTimer();
             return;
         elseif ((castingSpellName == "寒冰箭" or castingSpellName == "Frostbolt") and castingRemainingTime > 0.5) then
-            -- 如果目标已进入战斗，则打断刚读的寒冰箭。
+            -- 否则则打断刚刚读的寒冰箭。
             SpellStopCasting();
             return;
         end
