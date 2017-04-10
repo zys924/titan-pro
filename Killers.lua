@@ -50,7 +50,7 @@ MageKiller = {
         local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
         local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
         if (not castingSpellName and not channelSpellName) then
-            -- 如果点了奥术飞弹天赋，则使用奥术飞弹：
+            -- 根据强化奥术飞弹天赋，决定技能策略。
             local _, _, _, _, currentRank, maxRank = GetTalentInfo(1, 3);
             if (currentRank == maxRank) then
                 -- 开局用寒冰箭。
