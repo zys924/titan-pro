@@ -54,7 +54,7 @@ MageKiller = {
             MC.TryCast("Frostbolt", nil, npc);
             ResetAfkTimer();
             return;
-        elseif (castingSpellName == "寒冰箭" and castingRemainingTime > 0.5) then
+        elseif ((castingSpellName == "寒冰箭" or castingSpellName == "Frostbolt") and castingRemainingTime > 0.5) then
             -- 如果目标已进入战斗，则打断刚读的寒冰箭。
             SpellStopCasting();
             return;
