@@ -40,101 +40,36 @@ local function GetMembersToBeHealedInPriority(healthThreshold)
     return results, membersUnderAttack, otherMembers;
 end
 -- Killers
-MageFireKiller = {
+MageKiller = {
     Action = function(npc)
         if (MC.GetActualDistance("player", npc) < 3) then
             MC.StartAutoAttacking();
         else
             MC.StopAutoAttacking();
         end
-        local objects = GetObjects(sheepFilter);
-        --[[local hasSheep = false;
-        for i = table.getn(objects), 1, -1 do
-            if (objects[i] == npc) then
-                table.remove(objects,i);
-            elseif (GetUnitAuraByName(npc, "Polymorph")  or GetUnitAuraByName(npc, "变形术")) then
-                hasSheep = true;
-            end
-        end]]
-        local playerHealth = UnitHealth("player") / UnitHealthMax("player");
-        local spellName, _, remainingTime = MC.GetCastingInfo();
-        if(not spellName) then
-            if (not UnitAffectingCombat(npc) and (not _FightPyroblastTime or GetTime() - _FightPyroblastTime > 2)) then
-                if (MC.TryCast("Pyroblast", nil, npc)) then
-                    ResetAfkTimer();
-                    return;
-                end
-            end
-            --[[if (not hasSheep and objects[1] and (not _FightPolymorphTime or GetTime() - _FightPolymorphTime > 2)) then
-                if (MC.TryCast("Polymorph", nil, objects[1])) then
-                    ResetAfkTimer();
-                    return;
-                end
-            end]]
-            if ((UnitHealth(npc) > 15 or playerHealth < 0.3) and MC.TryCast("Fire Blast", nil, npc)) then
-                ResetAfkTimer();
-                return;
-            end
-            if (MC.TryCast("Fireball", nil, npc)) then
-                ResetAfkTimer();
-                return;
-            end
-        elseif (spellName == "Pyroblast" or spellName == "炎爆术") then
-            if (remainingTime < 1) then
-                _FightPyroblastTime = GetTime();
-            end
-        --[[elseif (spellName == "Polymorph" or spellName == "变形术") then
-            if (remainingTime < 1) then
-                _FightPolymorphTime = GetTime();
-            end]]
-        end
-    end,
-    LowerDistanceCalculator = function() 
-        local _, _, _, _, currentRank = GetTalentInfo(2, 4);
-        return 29 + currentRank * 3; 
-    end,
-    UpperDistanceCalculator = function()        
-        local _, _, _, _, currentRank = GetTalentInfo(2, 4);
-        return 34 + currentRank * 3;
-    end,
-};
-MageFrostKiller = {
-    Action = function(npc)
-        if (MC.GetActualDistance("player", npc) < 3) then
-            MC.StartAutoAttacking();
-        else
-            MC.StopAutoAttacking();
-        end
-        if (MC.TryCast("Frostbolt", nil, npc)) then
-            ResetAfkTimer();
-            return;
-        end
-    end,
-    LowerDistanceCalculator = function() return 25; end,
-    UpperDistanceCalculator = function() return 30; end,
-};
-MageArcaneKiller = {
-    Action = function(npc)
-        if (MC.GetActualDistance("player", npc) < 3) then
-            MC.StartAutoAttacking();
-        else
-            MC.StopAutoAttacking();
-        end
-        local spellName, _, remainingTime = MC.GetCastingInfo();
-        if(not spellName) then
+        local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
+        local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
+        if (not castingSpellName and not channelSpellName) then
+            -- 开局用寒冰箭。
             if (not UnitAffectingCombat(npc) and (not _FightFrostboltTime or GetTime() - _FightFrostboltTime > 2)) then
                 if (MC.TryCast("Frostbolt", nil, npc)) then
                     ResetAfkTimer();
                     return;
                 end
             end
-            local _, _, remainingTime = MC.GetChannelInfo();
-            if ((not remainingTime or remainingTime < 0.2) and MC.TryCast("Arcane Missiles", nil, npc)) then
-                ResetAfkTimer();
+            -- 奥术飞弹。
+            if (not channelRemainingTime or channelRemainingTime < 0.2) then
+                if (MC.TryCast("Arcane Missiles", nil, npc)) then
+                    ResetAfkTimer();
+                    return;
+                end
+            end
+            -- 填充射击。
+            if (MC.TryCast("射击", nil, npc)) then
                 return;
             end
-        elseif (spellName == "Frostbolt" or spellName == "寒冰箭") then
-            if (remainingTime < 1) then
+        elseif (castingSpellName == "Frostbolt" or castingSpellName == "寒冰箭") then
+            if (castingRemainingTime < 1) then
                 _FightFrostboltTime = GetTime();
             end
         end
