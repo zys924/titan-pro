@@ -290,13 +290,19 @@ WarriorKiller = {
 };
 RogueKiller = {
     Action = function(npc)
-        if (MC.GetActualDistance("player", npc) < 3) then
+        if (MC.GetActualDistance("player", npc) < 5) then
             MC.StartAutoAttacking();
         else
             MC.StopAutoAttacking();
         end
+        local playerHealth = UnitHealth("player") / UnitHealthMax("player");
         local npcHealth = UnitHealth(npc) / UnitHealthMax(npc);
         local comboPoints = GetComboPoints();
+        -- 闪避
+        if (playerHealth < 0.3 and HasSpell(5278) and GetSpellCooldownById(5278) == 0) then
+            MC.TryCast("闪避");
+            return;
+        end
         -- 剔骨
         if (comboPoints > 2 and npcHealth < 0.5 or comboPoints > 3) then
             MC.TryCast("剔骨", nil, npc);
@@ -304,7 +310,7 @@ RogueKiller = {
         end
         -- 背刺
         local mainHandWeapon = SR.GetInventoryItem(16);
-        if (mainHandWeapon and mainHandWeapon.SubType == "Daggers" and MC.IsFacingBack("player", npc) and MC.IsCastable("背刺", nil, npc)) then
+        if (mainHandWeapon and mainHandWeapon.SubType == "Daggers" and MC.IsFacingBack("player", npc, math.pi / 2) and MC.IsCastable("背刺", nil, npc)) then
             MC.Cast("背刺", nil, npc);
             return;
         end
