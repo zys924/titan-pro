@@ -50,16 +50,26 @@ MageKiller = {
         local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
         local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
         if (not castingSpellName and not channelSpellName) then
-            -- 开局用寒冰箭。
-            if (not UnitAffectingCombat(npc) and (not _FightFrostboltTime or GetTime() - _FightFrostboltTime > 2)) then
-                if (MC.TryCast("Frostbolt", nil, npc)) then
-                    ResetAfkTimer();
-                    return;
+            -- 如果点了奥术飞弹天赋，则使用奥术飞弹：
+            local _, _, _, _, currentRank, maxRank = GetTalentInfo(1, 3);
+            if (currentRank == maxRank) then
+                -- 开局用寒冰箭。
+                if (not UnitAffectingCombat(npc) and (not _FightFrostboltTime or GetTime() - _FightFrostboltTime > 2)) then
+                    if (MC.TryCast("Frostbolt", nil, npc)) then
+                        ResetAfkTimer();
+                        return;
+                    end
                 end
-            end
-            -- 奥术飞弹。
-            if (not channelRemainingTime or channelRemainingTime < 0.2) then
-                if (MC.TryCast("Arcane Missiles", nil, npc)) then
+                -- 奥术飞弹。
+                if (not channelRemainingTime or channelRemainingTime < 0.2) then
+                    if (MC.TryCast("Arcane Missiles", nil, npc)) then
+                        ResetAfkTimer();
+                        return;
+                    end
+                end
+            else
+                -- 无限火球。
+                if (MC.TryCast("Fireball", nil, npc)) then
                     ResetAfkTimer();
                     return;
                 end
