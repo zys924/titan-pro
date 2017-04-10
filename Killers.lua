@@ -49,14 +49,17 @@ MageKiller = {
         end
         local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
         local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
+        if (not UnitAffectingCombat(npc)) then
+            -- 如果目标没有进入战斗，则用寒冰箭开局。
+            MC.TryCast("Frostbolt", nil, npc);
+            ResetAfkTimer();
+            return;
+        elseif (castingSpellName == "寒冰箭" and castingRemainingTime > 0.5) then
+            -- 如果目标已进入战斗，则打断刚读的寒冰箭。
+            SpellStopCasting();
+            return;
+        end
         if (not castingSpellName and not channelSpellName) then
-            -- 开局用寒冰箭。
-            if (not UnitAffectingCombat(npc) and (not _FightFrostboltTime or GetTime() - _FightFrostboltTime > 2)) then
-                if (MC.TryCast("Frostbolt", nil, npc)) then
-                    ResetAfkTimer();
-                    return;
-                end
-            end
             -- 根据强化奥术飞弹天赋，决定技能策略。
             local _, _, _, _, currentRank, maxRank = GetTalentInfo(1, 3);
             if (currentRank == maxRank) then
@@ -77,10 +80,6 @@ MageKiller = {
             -- 填充射击。
             if (MC.TryCast("射击", nil, npc)) then
                 return;
-            end
-        elseif (castingSpellName == "Frostbolt" or castingSpellName == "寒冰箭") then
-            if (castingRemainingTime < 1) then
-                _FightFrostboltTime = GetTime();
             end
         end
     end,
