@@ -299,8 +299,8 @@ RogueKiller = {
         local npcHealth = UnitHealth(npc) / UnitHealthMax(npc);
         local comboPoints = GetComboPoints();
         -- 闪避
-        if (playerHealth < 0.3 and HasSpell(5278) and GetSpellCooldownById(5278) == 0) then
-            MC.TryCast("闪避");
+        if (playerHealth < 0.3 and MC.IsCastable("闪避")) then
+            MC.Cast("闪避");
             return;
         end
         -- 剔骨
