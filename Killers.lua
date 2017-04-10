@@ -47,8 +47,8 @@ MageKiller = {
         else
             MC.StopAutoAttacking();
         end
-        local castingSpellName = MC.GetCastingInfo();
-        local channelSpellName = MC.GetChannelInfo();
+        local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
+        local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
         if (not UnitAffectingCombat(npc)) then
             -- 如果目标没有进入战斗，则用寒冰箭开局。
             MC.TryCast("Frostbolt", nil, npc);
