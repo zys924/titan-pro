@@ -64,11 +64,9 @@ MageKiller = {
             local _, _, _, _, currentRank, maxRank = GetTalentInfo(1, 3);
             if (currentRank == maxRank) then
                 -- 如果点了强化奥术飞弹天赋，则无限奥术飞弹。
-                if (not channelRemainingTime or channelRemainingTime < 0.2) then
-                    if (MC.TryCast("Arcane Missiles", nil, npc)) then
-                        ResetAfkTimer();
-                        return;
-                    end
+                if (MC.TryCast("Arcane Missiles", nil, npc)) then
+                    ResetAfkTimer();
+                    return;
                 end
             else
                 -- 如果没点强化奥术飞弹天赋，则无限火球。
