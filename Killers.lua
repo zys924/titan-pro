@@ -86,11 +86,14 @@ MageKiller = {
                 -- 如果没点强化奥术飞弹天赋，则无限火球。
                 if (MC.IsCastable("火球术", nil, npc)) then
                     MC.Cast("火球术", nil, npc);
+                    ResetAfkTimer();
                     return;
                 end
             end
             -- 填充射击。
-            if (MC.TryCast("射击", nil, npc)) then
+            if (MC.IsCastable("射击", nil, npc)) then
+                MC.Cast("惩击", nil, npc);
+                ResetAfkTimer();
                 return;
             end
         end
@@ -105,7 +108,7 @@ PriestKiller = {
         else
             MC.StopAutoAttacking();
         end
-        -- 治疗
+        -- 治疗模组
         local membersToBeHealed, membersUnderAttackToBeHealed, otherMembersToBeHealed = GetMembersToBeHealedInPriority(0.9);
         for i = 1, table.getn(membersToBeHealed) do
             local healableMember = membersToBeHealed[i];
@@ -117,6 +120,7 @@ PriestKiller = {
                 end
                 if (not weakenedSoulAuraName) then
                     MC.Cast("真言术：盾", nil, healableMember);
+                    ResetAfkTimer();
                     return;
                 end
             end
@@ -128,16 +132,18 @@ PriestKiller = {
                 end
                 if (not renewAura) then
                     MC.Cast("恢复", nil, healableMember);
+                    ResetAfkTimer();
                     return;
                 end
             end
-            -- 使用次级治疗术加血
+            -- 次级治疗术
             if (UnitHealth(healableMember) / UnitHealthMax(healableMember) < 0.6 and MC.IsCastable("次级治疗术", nil, healableMember)) then
                 MC.Cast("次级治疗术", nil, healableMember);
+                ResetAfkTimer();
                 return;
             end
         end
-        -- 攻击
+        -- 攻击模块
         local canUseAttackingSpells = UnitMana("player") / UnitManaMax("player") > 0.5;
         if (canUseAttackingSpells) then
             -- 上痛
@@ -148,16 +154,21 @@ PriestKiller = {
                 end
                 if (not shadowWordPainAura) then
                     MC.Cast("暗言术：痛", nil, npc);
+                    ResetAfkTimer();
                     return;
                 end
             end
             -- 惩击
-            if (MC.TryCast("惩击", nil, npc)) then
+            if (MC.IsCastable("惩击", nil, npc)) then
+                MC.Cast("惩击", nil, npc);
+                ResetAfkTimer();
                 return;
             end
         end
-        -- 射击
-        if (MC.TryCast("射击", nil, npc)) then
+        -- 填充射击。
+        if (MC.IsCastable("射击", nil, npc)) then
+            MC.Cast("惩击", nil, npc);
+            ResetAfkTimer();
             return;
         end
     end,
@@ -172,11 +183,15 @@ WarriorKiller = {
             MC.StopAutoAttacking();
         end
         local npcHealth = UnitHealth(npc) / UnitHealthMax(npc);
-        -- 冲锋
-        if (not UnitAffectingCombat("player") and MC.TryCast("冲锋", nil, npc)) then
-            return;
+        -- 开局使用冲锋。
+        if (not UnitAffectingCombat("player")) then
+            if (MC.IsCastable("冲锋", nil, npc, true)) then
+                MC.Cast("冲锋", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
         end
-        -- 战斗怒吼
+        -- BUFF战斗怒吼。
         local isBattleShoutLearnt = MC.GetSpellId("战斗怒吼", nil, true) ~= nil;
         if (isBattleShoutLearnt) then
             local _, _, _, _, battleShoutRemainingTime = MC.GetUnitAuraByName("player", "战斗怒吼");
@@ -184,11 +199,14 @@ WarriorKiller = {
                 _, _, _, _, battleShoutRemainingTime = MC.GetUnitAuraByName("player", "Battle Shout");
             end
             if (not battleShoutRemainingTime or battleShoutRemainingTime < 5) then
-                MC.TryCast("战斗怒吼");
-                return;
+                if (MC.IsCastable("战斗怒吼", nil, npc, true)) then
+                    MC.Cast("战斗怒吼", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
             end
         end
-        -- 断筋
+        -- 优先上断筋。
         local isRendLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
         if (isRendLearnt) then
             local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "断筋");
@@ -196,11 +214,14 @@ WarriorKiller = {
                 _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Rend");
             end
             if (not rendRemainingTime or rendRemainingTime < 3) then
-                MC.TryCast("断筋", nil, npc);
-                return;
+                if (MC.IsCastable("断筋", nil, npc, true)) then
+                    MC.Cast("断筋", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
             end
         end
-        -- 撕裂
+        -- 如果目标血量够多，则上撕裂。
         local isRendLearnt = MC.GetSpellId("撕裂", nil, true) ~= nil;
         if (isRendLearnt and npcHealth > 0.5) then
             local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "撕裂");
@@ -208,21 +229,30 @@ WarriorKiller = {
                 _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Rend");
             end
             if (not rendRemainingTime or rendRemainingTime < 3) then
-                MC.TryCast("撕裂", nil, npc);
-                return;
+                if (MC.IsCastable("撕裂", nil, npc, true)) then
+                    MC.Cast("撕裂", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
             end
         end
-        -- 雷霆一击
+        -- 如果周围有多个怪，则优先雷霆一击。
         local isThunderClapLearnt = MC.GetSpellId("雷霆一击", nil, true) ~= nil;
         if (isThunderClapLearnt) then
             local surroundingTargetCount = MC.GetAttackableTargetCount(8);
-            if (surroundingTargetCount > 1 and MC.TryCast("雷霆一击")) then
-                return;
+            if (surroundingTargetCount > 1) then
+                if (MC.IsCastable("雷霆一击", nil, npc, true)) then
+                    MC.Cast("雷霆一击", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
             end
         end
-        -- 英勇打击
+        -- 填充英勇打击。
         if (not isRendLearnt or UnitMana("player") > 20) then
-            if (MC.TryCast("英勇打击", nil, npc)) then
+            if (MC.IsCastable("英勇打击", nil, npc, true)) then
+                MC.Cast("英勇打击", nil, npc);
+                ResetAfkTimer();
                 return;
             end
         end
@@ -240,7 +270,7 @@ WarriorKiller = {
         if (not UnitAffectingCombat("player") and chargeSpellId and GetSpellCooldownById(chargeSpellId) == 0 and UnitExists("target") and GetDistance("player", "target") > 10) then
             return 22;
         else
-            return 3;
+            return 4;
         end
     end,
 };
