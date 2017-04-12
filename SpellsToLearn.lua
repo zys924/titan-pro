@@ -1,202 +1,202 @@
 SpellsToLearn = { 
     MAGE = { -- 职业通用名称（即英文名称的大写版）
-		[1] = {
-			{"奥术智慧", 1, function() return true; end}, -- {技能名称, 技能等级[, 过滤函数(即只有该函数返回true是才认为该技能为可学习技能，可空)]}
-		},
-		[4] = {
-			{"造水术",1},
-			{"寒冰箭",1},
-		},
-		[6] = {
-			{"造食术", 1},
-			{"火球术", 2},
-			{"火焰冲击", 1},
-		},
-		[8] = {
-			{"奥术飞弹", 1},
-			{"变形术", 1},
-			{"寒冰箭", 2},
-		},
-		[10] = {
-			{"造水术", 2},
-			{"霜甲术", 2},
-			{"冰霜新星", 1},
-		},
-		[12] = {
-			{"造食术", 2},
-			{"魔法抑制", 1},
-			{"火球术", 3},
-		},
-		[14] = {
-			{"魔爆术", 1},
-			{"奥术智慧", 2},
-			{"火焰冲击", 2},
-			{"寒冰箭", 3},
-		},
-		[16] = {
-			{"奥术飞弹", 2},
-		},
-		[18] = {
-			{"解除次级诅咒",},
-			{"火球术", 4},
-		},
-		[20] = {
-			{"Blink", },
-			{"Conjure Water", 3},
-			{"Evocation",},
-			{"Polymorph", 2},
-			{"Blizzard", 1},
-			{"Frost Armor", 3},
-			{"Frostbolt", 4},
-		},
-		[22] = {
-			{"Arcane Explosion", 2},
-			{"Conjure Food", 3},
-			{"Fire Blast", 3},
-		},
-		[24] = {
-			{"Arcane Missiles", 3},
-			{"Counterspell",},
-			{"Dampen Magic", 2},
-			{"Fireball", 5},
-			{"Pyroblast", 2, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-		},
-		[26] = {
-			{"Frostbolt", 5},
-		},
-		[28] = {
-			{"Arcane Intellect", 3},
-			{"Blizzard", 2},
-		},
-		[30] = {
-			{"Arcane Explosion", 3},
-			{"Conjure Water", 4},
-			{"Fire Blast", 4},
-			{"Fireball", 6},
-			{"Pyroblast", 3, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-			{"Ice Armor", 1},
-		},
-		[32] = {
-			{"Arcane Missiles", 4},
-			{"Conjure Food", 4},
-			{"Frostbolt", 6},
-		},
-		[34] = {
-			{"Mage Armor", 1},
-		},
-		[36] = {
-			{"Dampen Magic", 3},
-			{"Fireball", 7},
-			{"Pyroblast", 4, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-			{"Blizzard", 3},
-		},
-		[38] = {
-			{"Arcane Explosion", 4},
-			{"Fire Blast", 5},
-			{"Frostbolt", 7},
-		},
-		[40] = {
-			{"Arcane Missiles", 5},
-			{"Conjure Water", 5},
-			{"Polymorph", 3},
-			{"Ice Armor", 2},
-		},
-		[42] = {
-			{"Arcane Intellect", 4},
-			{"Conjure Food", 5},
-			{"Fireball", 8},
-			{"Pyroblast", 5, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-		},
-		[44] = {
-			{"Blizzard", 4},
-			{"Frostbolt", 8},
-		},
-		[46] = {
-			{"Arcane Explosion", 5},
-			{"Mage Armor", 2},
-			{"Fire Blast", 6},
-			{"Ice Barrier", 2, function()
-				local _, _, _, _, currentRank = GetTalentInfo(3,17);
-				return currentRank == 1;			
-				end
-			},
-		},
-		[48] = {
-			{"Arcane Missiles", 6},
-			{"Dampen Magic", 4},
-			{"Fireball", 9},
-			{"Pyroblast", 6, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-		},
-		[50] = {
-			{"Conjure Water", 6},
-			{"Frostbolt", 9},
-			{"Ice Armor", 3},
-		},
-		[52] = {
-			{"Conjure Food", 6},
-			{"Blizzard", 5},
-			{"Ice Barrier", 3, function()
-				local _, _, _, _, currentRank = GetTalentInfo(3,17);
-				return currentRank == 1;			
-				end
-			},
-		},
-		[54] = {
-			{"Arcane Explosion", 6},
-			{"Fireball", 10},
-			{"Pyroblast", 7, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-			{"Fire Blast", 7},
-		},
-		[56] = {
-			{"Arcane Intellect", 5},
-			{"Arcane Missiles", 7},
-			{"Frostbolt", 10},
-		},
-		[58] = {
-			{"Mage Armor", 3},
-			{"Ice Barrier", 4, function()
-				local _, _, _, _, currentRank = GetTalentInfo(3,17);
-				return currentRank == 1;			
-				end
-			},
-		},
-		[60] = {
-			{"Dampen Magic", 5},
-			{"Polymorph", 4},
-			{"Fireball", 11},
-			{"Pyroblast", 8, function()
-				local _, _, _, _, currentRank = GetTalentInfo(2,8);
-				return currentRank == 1;			
-				end
-			},
-			{"Blizzard", 6},
-			{"Ice Armor", 4},
-		},	
-	},
+        [1] = {
+            {"奥术智慧", 1, function() return true; end}, -- {技能名称, 技能等级[, 过滤函数(即只有该函数返回true是才认为该技能为可学习技能，可空)]}
+        },
+        [4] = {
+            {"造水术",1},
+            {"寒冰箭",1},
+        },
+        [6] = {
+            {"造食术", 1},
+            {"火球术", 2},
+            {"火焰冲击", 1},
+        },
+        [8] = {
+            {"奥术飞弹", 1},
+            {"变形术", 1},
+            {"寒冰箭", 2},
+        },
+        [10] = {
+            {"造水术", 2},
+            {"霜甲术", 2},
+            {"冰霜新星", 1},
+        },
+        [12] = {
+            {"造食术", 2},
+            {"魔法抑制", 1},
+            {"火球术", 3},
+        },
+        [14] = {
+            {"魔爆术", 1},
+            {"奥术智慧", 2},
+            {"火焰冲击", 2},
+            {"寒冰箭", 3},
+        },
+        [16] = {
+            {"奥术飞弹", 2},
+        },
+        [18] = {
+            {"解除次级诅咒",},
+            {"火球术", 4},
+        },
+        [20] = {
+            {"Blink", },
+            {"Conjure Water", 3},
+            {"Evocation",},
+            {"Polymorph", 2},
+            {"Blizzard", 1},
+            {"Frost Armor", 3},
+            {"Frostbolt", 4},
+        },
+        [22] = {
+            {"Arcane Explosion", 2},
+            {"Conjure Food", 3},
+            {"Fire Blast", 3},
+        },
+        [24] = {
+            {"Arcane Missiles", 3},
+            {"Counterspell",},
+            {"Dampen Magic", 2},
+            {"Fireball", 5},
+            {"Pyroblast", 2, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+        },
+        [26] = {
+            {"Frostbolt", 5},
+        },
+        [28] = {
+            {"Arcane Intellect", 3},
+            {"Blizzard", 2},
+        },
+        [30] = {
+            {"Arcane Explosion", 3},
+            {"Conjure Water", 4},
+            {"Fire Blast", 4},
+            {"Fireball", 6},
+            {"Pyroblast", 3, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+            {"Ice Armor", 1},
+        },
+        [32] = {
+            {"Arcane Missiles", 4},
+            {"Conjure Food", 4},
+            {"Frostbolt", 6},
+        },
+        [34] = {
+            {"Mage Armor", 1},
+        },
+        [36] = {
+            {"Dampen Magic", 3},
+            {"Fireball", 7},
+            {"Pyroblast", 4, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+            {"Blizzard", 3},
+        },
+        [38] = {
+            {"Arcane Explosion", 4},
+            {"Fire Blast", 5},
+            {"Frostbolt", 7},
+        },
+        [40] = {
+            {"Arcane Missiles", 5},
+            {"Conjure Water", 5},
+            {"Polymorph", 3},
+            {"Ice Armor", 2},
+        },
+        [42] = {
+            {"Arcane Intellect", 4},
+            {"Conjure Food", 5},
+            {"Fireball", 8},
+            {"Pyroblast", 5, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+        },
+        [44] = {
+            {"Blizzard", 4},
+            {"Frostbolt", 8},
+        },
+        [46] = {
+            {"Arcane Explosion", 5},
+            {"Mage Armor", 2},
+            {"Fire Blast", 6},
+            {"Ice Barrier", 2, function()
+                local _, _, _, _, currentRank = GetTalentInfo(3,17);
+                return currentRank == 1;            
+                end
+            },
+        },
+        [48] = {
+            {"Arcane Missiles", 6},
+            {"Dampen Magic", 4},
+            {"Fireball", 9},
+            {"Pyroblast", 6, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+        },
+        [50] = {
+            {"Conjure Water", 6},
+            {"Frostbolt", 9},
+            {"Ice Armor", 3},
+        },
+        [52] = {
+            {"Conjure Food", 6},
+            {"Blizzard", 5},
+            {"Ice Barrier", 3, function()
+                local _, _, _, _, currentRank = GetTalentInfo(3,17);
+                return currentRank == 1;            
+                end
+            },
+        },
+        [54] = {
+            {"Arcane Explosion", 6},
+            {"Fireball", 10},
+            {"Pyroblast", 7, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+            {"Fire Blast", 7},
+        },
+        [56] = {
+            {"Arcane Intellect", 5},
+            {"Arcane Missiles", 7},
+            {"Frostbolt", 10},
+        },
+        [58] = {
+            {"Mage Armor", 3},
+            {"Ice Barrier", 4, function()
+                local _, _, _, _, currentRank = GetTalentInfo(3,17);
+                return currentRank == 1;            
+                end
+            },
+        },
+        [60] = {
+            {"Dampen Magic", 5},
+            {"Polymorph", 4},
+            {"Fireball", 11},
+            {"Pyroblast", 8, function()
+                local _, _, _, _, currentRank = GetTalentInfo(2,8);
+                return currentRank == 1;            
+                end
+            },
+            {"Blizzard", 6},
+            {"Ice Armor", 4},
+        },    
+    },
     PRIEST = { -- 职业通用名称（即英文名称的大写版）
         [1] = {
             {"真言术：韧", 1}, -- {技能名称, 技能等级[, 过滤函数(即只有该函数返回true是才认为该技能为可学习技能，可空)]}
