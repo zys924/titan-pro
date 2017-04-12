@@ -56,7 +56,8 @@ MageKiller = {
         end
         if ((not UnitAffectingCombat(npc) or not isTargetingMe) and not hasFrostboltDebuff) then
             -- 如果目标没有进入战斗或者当前目标不是我，而且身上没有寒冰箭DEBUFF，则用寒冰箭开局。
-            if (MC.TryCast("Frostbolt", nil, npc)) then
+            if (MC.IsCastable("寒冰箭", nil, npc)) then
+                MC.Cast("寒冰箭", nil, npc);
                 ResetAfkTimer();
                 return;
             end
@@ -66,18 +67,25 @@ MageKiller = {
             return;
         end
         if (not castingSpellName and not channelSpellName) then
+            -- 优先火冲。
+            if (MC.IsCastable("火焰冲击", nil, npc)) then
+                MC.Cast("火焰冲击", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
             -- 根据强化奥术飞弹天赋，决定技能策略。
             local _, _, _, _, currentRank, maxRank = GetTalentInfo(1, 3);
             if (currentRank == maxRank) then
                 -- 如果点了强化奥术飞弹天赋，则无限奥术飞弹。
-                if (MC.TryCast("Arcane Missiles", nil, npc)) then
+                if (MC.IsCastable("奥术飞弹", nil, npc)) then
+                    MC.Cast("奥术飞弹", nil, npc);
                     ResetAfkTimer();
                     return;
                 end
             else
                 -- 如果没点强化奥术飞弹天赋，则无限火球。
-                if (MC.TryCast("Fireball", nil, npc)) then
-                    ResetAfkTimer();
+                if (MC.IsCastable("火球术", nil, npc)) then
+                    MC.Cast("火球术", nil, npc);
                     return;
                 end
             end
