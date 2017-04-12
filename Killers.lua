@@ -54,10 +54,12 @@ MageKiller = {
         else
             MC.StopAutoAttacking();
         end
-        if ((not UnitAffectingCombat(npc) or not isTargetingMe) and not hasFrostboltDebuff and MC.TryCast("Frostbolt", nil, npc)) then
+        if ((not UnitAffectingCombat(npc) or not isTargetingMe) and not hasFrostboltDebuff) then
             -- 如果目标没有进入战斗或者当前目标不是我，而且身上没有寒冰箭DEBUFF，则用寒冰箭开局。
-            ResetAfkTimer();
-            return;
+            if (MC.TryCast("Frostbolt", nil, npc)) then
+                ResetAfkTimer();
+                return;
+            end
         elseif ((castingSpellName == "寒冰箭" or castingSpellName == "Frostbolt") and castingRemainingTime > 0.5) then
             -- 否则则打断刚刚读的寒冰箭。
             SpellStopCasting();
