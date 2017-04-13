@@ -294,7 +294,7 @@ RogueKiller = {
         end
         -- 三星以上剔骨。
         if (comboPoints > 2 and npcHealth < 0.5 or comboPoints > 3) then
-            if (MC.IsCastable("剔骨", nil, nil, true)) then
+            if (MC.IsCastable("剔骨", nil, npc, true)) then
                 MC.Cast("剔骨");
                 ResetAfkTimer();
                 return;
@@ -303,13 +303,13 @@ RogueKiller = {
         -- 如果装备匕首并且在目标背后则使用背刺，否则使用邪恶攻击。
         local mainHandWeapon = SR.GetInventoryItem(16);
         if (mainHandWeapon and mainHandWeapon.SubType == "Daggers" and MC.IsFacingBack("player", npc, math.pi / 2) and MC.IsCastable("背刺", nil, npc)) then
-            if (MC.IsCastable("背刺", nil, nil, true)) then
+            if (MC.IsCastable("背刺", nil, npc, true)) then
                 MC.Cast("背刺");
                 ResetAfkTimer();
                 return;
             end
         else
-            if (MC.IsCastable("邪恶攻击", nil, nil, true)) then
+            if (MC.IsCastable("邪恶攻击", nil, npc, true)) then
                 MC.Cast("邪恶攻击");
                 ResetAfkTimer();
                 return;
