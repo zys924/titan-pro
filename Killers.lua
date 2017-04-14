@@ -206,6 +206,13 @@ WarriorKiller = {
                 end
             end
         end
+        -- 对目标不是我的怪嘲讽。
+        local npcTarget = GetUnitTarget(npc);
+        if (npcTarget and not UnitIsUnit(npcTarget, "player") and MC.IsCastable("嘲讽", nil, npc, true)) then
+            MC.Cast("嘲讽", nil, npc);
+            ResetAfkTimer();
+            return;
+        end
         -- 优先上断筋。
         local isRendLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
         if (isRendLearnt) then
