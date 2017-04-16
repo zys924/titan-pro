@@ -103,7 +103,7 @@ MageKiller = {
 };
 PriestKiller = {
     Action = function(npc)
-        if (MC.GetActualDistance("player", npc) < 3) then
+        if (MC.GetActualDistance("player", npc) < 5) then
             MC.StartAutoAttacking();
         else
             MC.StopAutoAttacking();
@@ -177,7 +177,7 @@ PriestKiller = {
 };
 WarriorKiller = {
     Action = function(npc)
-        if (MC.GetActualDistance("player", npc) < 3) then
+        if (MC.GetActualDistance("player", npc) < 5) then
             MC.StartAutoAttacking();
         else
             MC.StopAutoAttacking();
