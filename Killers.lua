@@ -265,20 +265,10 @@ WarriorKiller = {
         end
     end,
     LowerDistanceCalculator = function()
-        local chargeSpellId = MC.GetSpellId("冲锋", nil, true);
-        if (not UnitAffectingCombat("player") and chargeSpellId and GetSpellCooldownById(chargeSpellId) == 0 and UnitExists("target") and GetDistance("player", "target") > 10) then
-            return 20;
-        else
-            return 2;
-        end
+        return 2;
     end,
     UpperDistanceCalculator = function()
-        local chargeSpellId = MC.GetSpellId("冲锋", nil, true);
-        if (not UnitAffectingCombat("player") and chargeSpellId and GetSpellCooldownById(chargeSpellId) == 0 and UnitExists("target") and GetDistance("player", "target") > 10) then
-            return 22;
-        else
-            return 4;
-        end
+        return 4;
     end,
 };
 RogueKiller = {
