@@ -92,7 +92,7 @@ MageKiller = {
             end
             -- 填充射击。
             if (MC.IsCastable("射击", nil, npc)) then
-                MC.Cast("惩击", nil, npc);
+                MC.Cast("射击", nil, npc);
                 ResetAfkTimer();
                 return;
             end
