@@ -264,12 +264,8 @@ WarriorKiller = {
             end
         end
     end,
-    LowerDistanceCalculator = function()
-        return 2;
-    end,
-    UpperDistanceCalculator = function()
-        return 4;
-    end,
+    LowerDistanceCalculator = function() return 2 end,
+    UpperDistanceCalculator = function() return 4 end,
 };
 RogueKiller = {
     Action = function(npc)
