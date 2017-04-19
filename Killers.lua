@@ -312,3 +312,109 @@ RogueKiller = {
     LowerDistanceCalculator = function() return 2 end,
     UpperDistanceCalculator = function() return 4 end,
 };
+HunterKiller = {
+    Action = function(npc)
+        -- 开启雄鹰守护
+        if (MC.IsCastable("雄鹰守护")) then
+            local aspectOfTheHawkAura = MC.GetUnitAuraByName(npc, "雄鹰守护");
+            if (not aspectOfTheHawkAura) then
+                aspectOfTheHawkAura = MC.GetUnitAuraByName(npc, "Aspect of the Hawk");
+            end
+            if (not aspectOfTheHawkAura) then
+                MC.Cast("雄鹰守护");
+                ResetAfkTimer();
+                return;
+            end
+        end
+        -- 开启强击光环
+        if (MC.IsCastable("强击光环")) then
+            local trueshotAura = MC.GetUnitAuraByName(npc, "强击光环");
+            if (not trueshotAura) then
+                trueshotAura = MC.GetUnitAuraByName(npc, "Trueshot Aura");
+            end
+            if (not trueshotAura) then
+                MC.Cast("强击光环");
+                ResetAfkTimer();
+                return;
+            end
+        end
+        if (MC.GetActualDistance("player", npc) < 8) then
+            -- 距离过近变近战，启动自动攻击。
+            if (MC.GetActualDistance("player", npc) < 5) then
+                MC.StartAutoAttacking();
+            else
+                MC.StopAutoAttacking();
+            end
+            -- 优先使用猫鼬撕咬。
+            if (MC.IsCastable("猫鼬撕咬", nil, npc, true)) then
+                MC.Cast("猫鼬撕咬", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
+            -- 填充猛禽一击。
+            if (MC.IsCastable("猛禽一击", nil, npc, true)) then
+                MC.Cast("猛禽一击", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
+        else
+            local npcHealth = UnitHealth(npc) / UnitHealthMax(npc);
+            -- 标记。
+            local huntersMarkAura = MC.GetUnitAuraByName(npc, "猎人印记");
+            if (not huntersMarkAura) then
+                huntersMarkAura = MC.GetUnitAuraByName(npc, "Hunter's Mark");
+            end
+            if (not huntersMarkAura) then
+                if (MC.IsCastable("猎人印记", nil, npc)) then
+                    MC.Cast("猎人印记", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+            end
+            -- 开局瞄准射击
+            if (MC.IsCastable("瞄准射击", nil, npc)) then
+                MC.Cast("瞄准射击", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
+            -- 上毒蛇钉刺。
+            local serpentStingAura = MC.GetUnitAuraByName(npc, "毒蛇钉刺");
+            if (not serpentStingAura) then
+                serpentStingAura = MC.GetUnitAuraByName(npc, "Serpent Sting");
+            end
+            if (not serpentStingAura and npcHealth > 0.5) then
+                if (MC.IsCastable("毒蛇钉刺", nil, npc)) then
+                    MC.Cast("毒蛇钉刺", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+            end
+            -- 卡CD打奥术射击。
+            if (MC.IsCastable("奥术射击", nil, npc)) then
+                MC.Cast("奥术射击", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
+            -- 展开自动射击。
+            if (MC.IsCastable("自动射击", nil, npc)) then
+                MC.Cast("自动射击", nil, npc);
+                ResetAfkTimer();
+                return;
+            end
+        end
+    end,
+    LowerDistanceCalculator = function()
+        if (UnitExists("target") and MC.GetActualDistance("player", "target") < 8) then
+            return 2;
+        else
+            return 29;
+        end
+    end,
+    UpperDistanceCalculator = function()
+        if (UnitExists("target") and MC.GetActualDistance("player", "target") < 8) then
+            return 3;
+        else
+            return 33;
+        end
+    end,
+};
