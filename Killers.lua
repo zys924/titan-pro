@@ -214,11 +214,11 @@ WarriorKiller = {
             return;
         end
         -- 优先上断筋。
-        local isRendLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
-        if (isRendLearnt) then
+        local isHamstringLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
+        if (isHamstringLearnt) then
             local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "断筋");
             if (not rendRemainingTime) then
-                _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Rend");
+                _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Hamstring");
             end
             if (not rendRemainingTime or rendRemainingTime < 3) then
                 if (MC.IsCastable("断筋", nil, npc, true)) then
@@ -256,7 +256,7 @@ WarriorKiller = {
             end
         end
         -- 填充英勇打击。
-        if (not isRendLearnt or UnitMana("player") > 20) then
+        if (not isHamstringLearnt or not isRendLearnt or UnitMana("player") > 20) then
             if (MC.IsCastable("英勇打击", nil, npc, true)) then
                 MC.Cast("英勇打击", nil, npc);
                 ResetAfkTimer();
