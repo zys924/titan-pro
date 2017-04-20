@@ -152,7 +152,7 @@ PriestKiller = {
                 if (not shadowWordPainAura) then
                     shadowWordPainAura = MC.GetUnitAuraByName(npc, "Shadow Word: Pain");
                 end
-                if (not shadowWordPainAura and MC.IsCastable("暗言术：痛", nil, npc)) then
+                if (not shadowWordPainAura) then
                     MC.Cast("暗言术：痛", nil, npc);
                     ResetAfkTimer();
                     return;
