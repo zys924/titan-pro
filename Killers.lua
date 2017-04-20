@@ -316,9 +316,9 @@ HunterKiller = {
     Action = function(npc)
         -- 开启雄鹰守护
         if (MC.IsCastable("雄鹰守护")) then
-            local aspectOfTheHawkAura = MC.GetUnitAuraByName(npc, "雄鹰守护");
+            local aspectOfTheHawkAura = MC.GetUnitAuraByName("player", "雄鹰守护");
             if (not aspectOfTheHawkAura) then
-                aspectOfTheHawkAura = MC.GetUnitAuraByName(npc, "Aspect of the Hawk");
+                aspectOfTheHawkAura = MC.GetUnitAuraByName("player", "Aspect of the Hawk");
             end
             if (not aspectOfTheHawkAura) then
                 MC.Cast("雄鹰守护");
@@ -328,9 +328,9 @@ HunterKiller = {
         end
         -- 开启强击光环
         if (MC.IsCastable("强击光环")) then
-            local trueshotAura = MC.GetUnitAuraByName(npc, "强击光环");
+            local trueshotAura = MC.GetUnitAuraByName("player", "强击光环");
             if (not trueshotAura) then
-                trueshotAura = MC.GetUnitAuraByName(npc, "Trueshot Aura");
+                trueshotAura = MC.GetUnitAuraByName("player", "Trueshot Aura");
             end
             if (not trueshotAura) then
                 MC.Cast("强击光环");
