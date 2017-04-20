@@ -407,7 +407,7 @@ HunterKiller = {
         if (UnitExists("target") and MC.GetActualDistance("player", "target") < 8) then
             return 2;
         else
-            return 29;
+            return 30;
         end
     end,
     UpperDistanceCalculator = function()
