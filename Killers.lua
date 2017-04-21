@@ -43,6 +43,7 @@ end
 MageKiller = {
     Action = function(npc)
         -- 获取基本信息
+        local playerMana = UnitMana("player") / UnitManaMax("player");
         local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
         local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
         local npcTarget = GetUnitTarget(npc);
@@ -91,7 +92,7 @@ MageKiller = {
                 end
             end
             -- 填充射击。
-            if (MC.IsCastable("射击", nil, npc)) then
+            if (playerMana < 0.1 and MC.IsCastable("射击", nil, npc)) then
                 MC.Cast("射击", nil, npc);
                 ResetAfkTimer();
                 return;
@@ -166,7 +167,7 @@ PriestKiller = {
             end
         end
         -- 填充射击。
-        if (MC.IsCastable("射击", nil, npc)) then
+        if (table.getn(membersToBeHealed) == 0 and not canUseAttackingSpells and MC.IsCastable("射击", nil, npc)) then
             MC.Cast("射击", nil, npc);
             ResetAfkTimer();
             return;
