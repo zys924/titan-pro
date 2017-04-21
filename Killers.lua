@@ -138,10 +138,17 @@ PriestKiller = {
                 end
             end
             -- 次级治疗术
-            if (UnitHealth(healableMember) / UnitHealthMax(healableMember) < 0.6 and MC.IsCastable("次级治疗术", nil, healableMember)) then
-                MC.Cast("次级治疗术", nil, healableMember);
-                ResetAfkTimer();
-                return;
+            if (UnitHealth(healableMember) / UnitHealthMax(healableMember) < 0.6) then
+                if (MC.IsCastable("治疗术", nil, healableMember)) then
+                    MC.Cast("治疗术", nil, healableMember);
+                    ResetAfkTimer();
+                    return;
+                end
+                if (MC.IsCastable("次级治疗术", nil, healableMember)) then
+                    MC.Cast("次级治疗术", nil, healableMember);
+                    ResetAfkTimer();
+                    return;
+                end
             end
         end
         -- 攻击模块
