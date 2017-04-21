@@ -99,8 +99,8 @@ MageKiller = {
             end
         end
     end,
-    LowerDistanceCalculator = function() return 25; end,
-    UpperDistanceCalculator = function() return 30; end,
+    LowerDistanceCalculator = function() return 22; end,
+    UpperDistanceCalculator = function() return 25; end,
 };
 PriestKiller = {
     Action = function(npc)
@@ -173,7 +173,7 @@ PriestKiller = {
             return;
         end
     end,
-    LowerDistanceCalculator = function() return 25; end,
+    LowerDistanceCalculator = function() return 27; end,
     UpperDistanceCalculator = function() return 30; end,
 };
 WarriorKiller = {
