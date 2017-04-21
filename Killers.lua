@@ -137,7 +137,7 @@ PriestKiller = {
                     return;
                 end
             end
-            -- 次级治疗术
+            -- 治疗术
             if (UnitHealth(healableMember) / UnitHealthMax(healableMember) < 0.6) then
                 if (MC.IsCastable("治疗术", nil, healableMember)) then
                     MC.Cast("治疗术", nil, healableMember);
