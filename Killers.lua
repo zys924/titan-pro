@@ -272,8 +272,8 @@ WarriorKiller = {
             end
         end
     end,
-    LowerDistanceCalculator = function() return 2 end,
-    UpperDistanceCalculator = function() return 4 end,
+    LowerDistanceCalculator = function() return 1.5 end,
+    UpperDistanceCalculator = function() return 3 end,
 };
 RogueKiller = {
     Action = function(npc)
@@ -317,8 +317,8 @@ RogueKiller = {
             end
         end
     end,
-    LowerDistanceCalculator = function() return 2 end,
-    UpperDistanceCalculator = function() return 4 end,
+    LowerDistanceCalculator = function() return 1.5 end,
+    UpperDistanceCalculator = function() return 3 end,
 };
 HunterKiller = {
     Action = function(npc)
@@ -413,7 +413,7 @@ HunterKiller = {
     end,
     LowerDistanceCalculator = function()
         if (UnitExists("target") and MC.GetActualDistance("player", "target") < 8) then
-            return 2;
+            return 1.5;
         else
             return 30;
         end
