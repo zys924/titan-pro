@@ -256,8 +256,8 @@ WarriorKiller = {
         if (isThunderClapLearnt) then
             local surroundingTargetCount = MC.GetAttackableTargetCount(8);
             if (surroundingTargetCount > 1) then
-                if (MC.IsCastable("雷霆一击", nil, npc, true)) then
-                    MC.Cast("雷霆一击", nil, npc);
+                if (MC.IsCastable("雷霆一击")) then
+                    MC.Cast("雷霆一击");
                     ResetAfkTimer();
                     return;
                 end
