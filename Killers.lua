@@ -207,8 +207,8 @@ WarriorKiller = {
                 _, _, _, _, battleShoutRemainingTime = MC.GetUnitAuraByName("player", "Battle Shout");
             end
             if (not battleShoutRemainingTime or battleShoutRemainingTime < 5) then
-                if (MC.IsCastable("战斗怒吼", nil, npc, true)) then
-                    MC.Cast("战斗怒吼", nil, npc);
+                if (MC.IsCastable("战斗怒吼")) then
+                    MC.Cast("战斗怒吼");
                     ResetAfkTimer();
                     return;
                 end
