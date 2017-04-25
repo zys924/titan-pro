@@ -426,3 +426,106 @@ HunterKiller = {
         end
     end,
 };
+WarlockKiller = {
+    Preparation = function(npc)
+        local result = true;
+        -- 魔甲术
+        if (not MC.GetUnitAuraByName("player", "魔甲术") and not MC.GetUnitAuraByName("player", "Demon Armor") and not MC.GetUnitAuraByName("player", "恶魔皮肤") and not MC.GetUnitAuraByName("player", "Demon Skin")) then
+            if (MC.IsCastable("魔甲术")) then
+                MC.Cast("魔甲术");
+                ResetAfkTimer();
+            elseif (MC.IsCastable("恶魔皮肤")) then
+                MC.Cast("恶魔皮肤");
+                ResetAfkTimer();
+            end
+            result = false;
+        end
+        -- 召唤小鬼
+        if (MC.IsCastable("召唤小鬼") and not UnitExists("pet")) then
+            MC.Cast("召唤小鬼");
+            ResetAfkTimer();
+            result = false;
+        end
+        return result;
+    end,
+    Action = function(npc)
+        -- 获取基本信息
+        local playerHealth = UnitHealth("player") / UnitHealthMax("player");
+        local playerMana = UnitMana("player") / UnitManaMax("player");
+        local castingSpellName, _, castingRemainingTime = MC.GetCastingInfo();
+        local channelSpellName, _, channelRemainingTime = MC.GetChannelInfo();
+        -- 近战范围内展开自动攻击。
+        if (MC.GetActualDistance("player", npc) < 5) then
+            MC.StartAutoAttacking();
+        else
+            MC.StopAutoAttacking();
+        end
+        -- 打断多余的献祭
+        if ((MC.GetUnitAuraByName("target", "献祭") or MC.GetUnitAuraByName("target", "Immolate")) and (castingSpellName == "献祭" or castingSpellName == "Immolate")) then
+            SpellStopCasting();
+            ResetAfkTimer();
+        end
+        if (not castingSpellName and not channelSpellName) then
+            -- 血换蓝。
+            if (playerHealth > 0.7 and playerMana < 0.5 and MC.IsCastable("生命分流")) then
+                MC.Cast("生命分流");
+                ResetAfkTimer();
+                return;
+            end
+            if (playerMana > 0.1) then
+                -- 夜幕
+                if (MC.GetUnitAuraByName("player", "夜幕") or MC.GetUnitAuraByName("player", "Nightfall")) then
+                    MC.TryCast("暗影箭", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+                -- 上献祭DOT
+                if (not MC.GetUnitAuraByName("target", "献祭") and not MC.GetUnitAuraByName("target", "Immolate") and MC.IsCastable("献祭", nil, npc)) then
+                    MC.Cast("献祭", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+                -- 上生命虹吸DOT
+                if (not MC.GetUnitAuraByName("target", "生命虹吸") and not MC.GetUnitAuraByName("target", "Siphon Life") and MC.IsCastable("生命虹吸", nil, npc)) then
+                    MC.Cast("生命虹吸", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+                -- 上痛苦诅咒DOT
+                if (not MC.GetUnitAuraByName("target", "痛苦诅咒") and not MC.GetUnitAuraByName("target", "Curse of Agony") and MC.IsCastable("痛苦诅咒", nil, npc)) then
+                    MC.Cast("痛苦诅咒", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+                -- 如果点满了强化腐蚀术天赋，则上腐蚀术DOT
+                local _, _, _, _, currentRank, maxRank = GetTalentInfo(1, 2);
+                if (currentRank == maxRank and not MC.GetUnitAuraByName("target", "腐蚀术") and not MC.GetUnitAuraByName("target", "Corruption") and MC.IsCastable("腐蚀术", nil, npc)) then
+                    MC.Cast("腐蚀术", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+                -- 如果生命值不够，则吸取生命
+                if (playerHealth < 0.9 and MC.IsCastable("吸取生命", nil, npc)) then
+                    MC.Cast("吸取生命", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+                -- 填充暗影箭。
+                if (MC.IsCastable("暗影箭", nil, npc)) then
+                    MC.Cast("暗影箭", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+            else
+                -- 蓝量不够则填充射击。
+                if (MC.IsCastable("射击", nil, npc)) then
+                    MC.Cast("射击", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+            end
+        end
+    end,
+    LowerDistanceCalculator = function() return 24; end,
+    UpperDistanceCalculator = function() return 27; end,
+};
