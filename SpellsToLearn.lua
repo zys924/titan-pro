@@ -208,7 +208,7 @@ SpellsToLearn = {
         },
         [40] = {
             {"神圣之灵", 2, function()
-                    local _, _, _, _, currentRank = GetTalentInfo(4, 13);
+                    local _, _, _, _, currentRank = GetTalentInfo(1, 13);
                     return currentRank == 1;            
                 end},
             {"心灵之火", 4},
@@ -236,7 +236,7 @@ SpellsToLearn = {
         [50] = {
             {"心灵之火", 5},
             {"神圣之灵", 3, function()
-                    local _, _, _, _, currentRank = GetTalentInfo(4, 13);
+                    local _, _, _, _, currentRank = GetTalentInfo(1, 13);
                     return currentRank == 1;            
                 end},
             {"暗言术：痛", 7},
@@ -264,7 +264,7 @@ SpellsToLearn = {
             {"真言术：盾", 10},
             {"真言术：韧", 6},
             {"神圣之灵", 4, function()
-                    local _, _, _, _, currentRank = GetTalentInfo(4, 13);
+                    local _, _, _, _, currentRank = GetTalentInfo(1, 13);
                     return currentRank == 1;            
                 end},
             {"心灵之火", 6},
