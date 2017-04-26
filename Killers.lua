@@ -166,6 +166,18 @@ PriestKiller = {
                     return;
                 end
             end
+            -- 神圣之火
+            if (MC.IsCastable("神圣之火", nil, npc)) then
+                local holyFireAura = MC.GetUnitAuraByName(npc, "神圣之火");
+                if (not holyFireAura) then
+                    holyFireAura = MC.GetUnitAuraByName(npc, "Holy Fire");
+                end
+                if (not holyFireAura) then
+                    MC.Cast("神圣之火", nil, npc);
+                    ResetAfkTimer();
+                    return;
+                end
+            end
             -- 惩击
             if (MC.IsCastable("惩击", nil, npc)) then
                 MC.Cast("惩击", nil, npc);
