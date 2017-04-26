@@ -441,21 +441,23 @@ HunterKiller = {
 WarlockKiller = {
     Preparation = function(npc)
         local result = true;
-        -- 魔甲术
+        -- 上魔甲术/恶魔皮肤。
         if (not MC.GetUnitAuraByName("player", "魔甲术") and not MC.GetUnitAuraByName("player", "Demon Armor") and not MC.GetUnitAuraByName("player", "恶魔皮肤") and not MC.GetUnitAuraByName("player", "Demon Skin")) then
-            if (MC.IsCastable("魔甲术")) then
+            if (MC.IsCastable("魔甲术", nil, nil, true)) then
                 MC.Cast("魔甲术");
                 ResetAfkTimer();
-            elseif (MC.IsCastable("恶魔皮肤")) then
+            elseif (MC.IsCastable("恶魔皮肤", nil, nil, true)) then
                 MC.Cast("恶魔皮肤");
                 ResetAfkTimer();
             end
             result = false;
         end
-        -- 召唤小鬼
-        if (MC.IsCastable("召唤小鬼") and not UnitExists("pet")) then
-            MC.Cast("召唤小鬼");
-            ResetAfkTimer();
+        -- 如果已经学会了召唤小鬼并且没有宠物，则召唤小鬼。
+        if (GetSpellId("召唤小鬼", nil, true) and not UnitExists("pet")) then
+            if (not MC.GetCastingInfo()) then
+                MC.TryCast("召唤小鬼");
+                ResetAfkTimer();
+            end
             result = false;
         end
         return result;
