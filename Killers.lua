@@ -233,36 +233,6 @@ WarriorKiller = {
             ResetAfkTimer();
             return;
         end
-        -- 优先上断筋。
-        local isHamstringLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
-        if (isHamstringLearnt) then
-            local hamstringAuraSpellId = MC.GetUnitAuraByName(npc, "断筋");
-            if (not hamstringAuraSpellId) then
-                hamstringAuraSpellId = MC.GetUnitAuraByName(npc, "Hamstring");
-            end
-            if (not hamstringAuraSpellId) then
-                if (MC.IsCastable("断筋", nil, npc, true)) then
-                    MC.Cast("断筋", nil, npc);
-                    ResetAfkTimer();
-                    return;
-                end
-            end
-        end
-        -- 如果目标血量够多，则上撕裂。
-        local isRendLearnt = MC.GetSpellId("撕裂", nil, true) ~= nil;
-        if (isRendLearnt and npcHealth > 0.5) then
-            local rendAuraSpellId = MC.GetUnitAuraByName(npc, "撕裂");
-            if (not rendAuraSpellId) then
-                rendAuraSpellId = MC.GetUnitAuraByName(npc, "Rend");
-            end
-            if (not rendAuraSpellId) then
-                if (MC.IsCastable("撕裂", nil, npc, true)) then
-                    MC.Cast("撕裂", nil, npc);
-                    ResetAfkTimer();
-                    return;
-                end
-            end
-        end
         -- 如果周围有多个怪，则优先雷霆一击。
         local isThunderClapLearnt = MC.GetSpellId("雷霆一击", nil, true) ~= nil;
         if (isThunderClapLearnt) then
@@ -273,6 +243,30 @@ WarriorKiller = {
                     ResetAfkTimer();
                     return;
                 end
+            end
+        end
+        -- 优先上断筋。
+        local isHamstringLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
+        if (isHamstringLearnt) then
+            local hamstringAura = MC.GetUnitAuraByName(npc, "断筋") or MC.GetUnitAuraByName(npc, "Hamstring");
+            if (not hamstringAura) then
+                if (MC.IsCastable("断筋", nil, npc, true)) then
+                    MC.Cast("断筋", nil, npc);
+                    ResetAfkTimer();
+                end
+                return;
+            end
+        end
+        -- 如果目标血量够多，则上撕裂。
+        local isRendLearnt = MC.GetSpellId("撕裂", nil, true) ~= nil;
+        if (isRendLearnt and npcHealth > 0.5) then
+            local rendAura = MC.GetUnitAuraByName(npc, "撕裂") or MC.GetUnitAuraByName(npc, "Rend");
+            if (not rendAura) then
+                if (MC.IsCastable("撕裂", nil, npc, true)) then
+                    MC.Cast("撕裂", nil, npc);
+                    ResetAfkTimer();
+                end
+                return;
             end
         end
         -- 填充英勇打击。
