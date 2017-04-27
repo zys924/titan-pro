@@ -236,11 +236,11 @@ WarriorKiller = {
         -- 优先上断筋。
         local isHamstringLearnt = MC.GetSpellId("断筋", nil, true) ~= nil;
         if (isHamstringLearnt) then
-            local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "断筋");
-            if (not rendRemainingTime) then
-                _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Hamstring");
+            local hamstringAuraSpellId = MC.GetUnitAuraByName(npc, "断筋");
+            if (not hamstringAuraSpellId) then
+                hamstringAuraSpellId = MC.GetUnitAuraByName(npc, "Hamstring");
             end
-            if (not rendRemainingTime or rendRemainingTime < 3) then
+            if (not hamstringAuraSpellId) then
                 if (MC.IsCastable("断筋", nil, npc, true)) then
                     MC.Cast("断筋", nil, npc);
                     ResetAfkTimer();
@@ -251,11 +251,11 @@ WarriorKiller = {
         -- 如果目标血量够多，则上撕裂。
         local isRendLearnt = MC.GetSpellId("撕裂", nil, true) ~= nil;
         if (isRendLearnt and npcHealth > 0.5) then
-            local _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "撕裂");
-            if (not rendRemainingTime) then
-                _, _, _, _, rendRemainingTime = MC.GetUnitAuraByName(npc, "Rend");
+            local rendAuraSpellId = MC.GetUnitAuraByName(npc, "撕裂");
+            if (not rendAuraSpellId) then
+                rendAuraSpellId = MC.GetUnitAuraByName(npc, "Rend");
             end
-            if (not rendRemainingTime or rendRemainingTime < 3) then
+            if (not rendAuraSpellId) then
                 if (MC.IsCastable("撕裂", nil, npc, true)) then
                     MC.Cast("撕裂", nil, npc);
                     ResetAfkTimer();
