@@ -3242,7 +3242,7 @@ Spells["Summon Warhorse"] = {
 Spells["召唤战马"] = {
     [1] = 23214
 };
-Spells["Summon Charger] = {
+Spells["Summon Charger"] = {
     [1] = 23214
 };
 
