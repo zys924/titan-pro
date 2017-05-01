@@ -49,7 +49,7 @@ local function GetMembersWithDebuff(debuffType)
             partyMember = GetObject("party" .. i);
         end
         if (partyMember and not UnitIsDead(partyMember)) then
-            spellIds = GetUnitAurasByType(partyMember, true, debuffType);
+            spellIds = MC.GetUnitAurasByType(partyMember, true, debuffType);
             if (table.getn(spellIds) > 0) then
                 table.insert(results, partyMember);
             end
