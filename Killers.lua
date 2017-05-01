@@ -39,6 +39,24 @@ local function GetMembersToBeHealedInPriority(healthThreshold)
     end
     return results, membersUnderAttack, otherMembers;
 end
+local function GetMembersWithDebuff(debuffType)
+    local results = {};
+    for i = 0, GetNumPartyMembers() do
+        local partyMember;
+        if (i == 0) then
+            partyMember = GetObject("player");
+        else
+            partyMember = GetObject("party" .. i);
+        end
+        if (partyMember and not UnitIsDead(partyMember)) then
+            spellIds = GetUnitAurasByType(partyMember, true, debuffType);
+            if (table.getn(spellIds) > 0) then
+                table.insert(results, partyMember);
+            end
+        end
+    end
+    return results;
+end
 -- Killers
 MageKiller = {
     Action = function(npc)
@@ -68,6 +86,19 @@ MageKiller = {
             return;
         end
         if (not castingSpellName and not channelSpellName) then
+            -- 解除诅咒。
+            local isRemoveLesserCurseLearnt = MC.GetSpellId("解除次级诅咒", nil, true) ~= nil;
+            if (isRemoveLesserCurseLearnt) then
+                membersWithCurse = GetMembersWithDebuff("Curse");
+                for i = 1, table.getn(membersWithCurse) do
+                    local memberWithCurse = membersWithCurse[i];
+                    if (MC.IsCastable("解除次级诅咒", nil, memberWithCurse)) then
+                        MC.Cast("解除次级诅咒", nil, memberWithCurse);
+                        ResetAfkTimer();
+                        return;
+                    end
+                end
+            end
             -- 优先火冲。
             if (MC.IsCastable("火焰冲击", nil, npc)) then
                 MC.Cast("火焰冲击", nil, npc);
@@ -119,7 +150,7 @@ PriestKiller = {
                 if (not weakenedSoulAura) then
                     weakenedSoulAura = MC.GetUnitAuraByName(healableMember, "Weakened Soul");
                 end
-                if (not weakenedSoulAuraName) then
+                if (not weakenedSoulAura) then
                     MC.Cast("真言术：盾", nil, healableMember);
                     ResetAfkTimer();
                     return;
