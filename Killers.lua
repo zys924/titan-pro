@@ -478,7 +478,7 @@ WarlockKiller = {
             result = false;
         end
         -- 如果已经学会了召唤小鬼并且没有宠物，则召唤小鬼。
-        if (GetSpellId("召唤小鬼", nil, true) and not UnitExists("pet")) then
+        if (MC.GetSpellId("召唤小鬼", nil, true) and not UnitExists("pet")) then
             if (not MC.GetCastingInfo()) then
                 MC.TryCast("召唤小鬼");
                 ResetAfkTimer();
