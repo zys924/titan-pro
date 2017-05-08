@@ -468,8 +468,8 @@ WarlockKiller = {
         local result = true;
         -- 上魔甲术/恶魔皮肤。
         if (not MC.GetUnitAuraByName("player", "魔甲术") and not MC.GetUnitAuraByName("player", "Demon Armor") and not MC.GetUnitAuraByName("player", "恶魔皮肤") and not MC.GetUnitAuraByName("player", "Demon Skin")) then
-            if (MC.IsCastable("魔甲术", nil, nil, true)) then
-                MC.Cast("魔甲术");
+            if (MC.IsCastable("魔甲术（术士）", nil, nil, true)) then
+                MC.Cast("魔甲术（术士）");
                 ResetAfkTimer();
             elseif (MC.IsCastable("恶魔皮肤", nil, nil, true)) then
                 MC.Cast("恶魔皮肤");
