@@ -57,8 +57,34 @@ local function GetMembersWithDebuff(debuffType)
     end
     return results;
 end
+local function GetMembersWithoutBuff(buffName)
+    local results = {};
+    for i = 0, GetNumPartyMembers() do
+        local partyMember;
+        if (i == 0) then
+            partyMember = GetObject("player");
+        else
+            partyMember = GetObject("party" .. i);
+        end
+        if (partyMember and not UnitIsDead(partyMember)) then
+            spellId = MC.GetUnitAuraByName(partyMember, buffName);
+            if (not spellId) then
+                table.insert(results, partyMember);
+            end
+        end
+    end
+    return results;
+end
 -- Killers
 MageKiller = {
+    Preparation = function()
+        local result = true;
+        -- 给队伍里所有人加奥术智慧
+        local isArcaneIntellectLearnt = MC.GetSpellId("奥术智慧", nil, true) ~= nil;
+        if (isArcaneIntellectLearnt) then
+            local membersWithoutArcaneIntellect = GetMembersWithoutBuff("奥术智慧");
+        end
+    end,
     Action = function(npc)
         -- 获取基本信息
         local playerMana = UnitMana("player") / UnitManaMax("player");
