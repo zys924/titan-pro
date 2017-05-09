@@ -98,24 +98,16 @@ MageKiller = {
         end
         -- 给自己上冰甲/霜甲。
         if (MC.GetSpellId("冰甲术", nil, true) ~= nil) then
-            local membersWithoutIceArmor = GetMembersWithoutAura("冰甲术", "Ice Armor");
-            for i = 1, table.getn(membersWithoutIceArmor) do
-                local memberWithoutIceArmor = membersWithoutIceArmor[i];
-                if (MC.IsCastable("冰甲术", nil, memberWithoutIceArmor, true)) then
-                    MC.Cast("冰甲术", nil, memberWithoutIceArmor);
-                    ResetAfkTimer();
-                    return false;
-                end
+            if (not MC.GetUnitAuraByName("player", "冰甲术") and not MC.GetUnitAuraByName("player", "Ice Armor")) then
+                MC.TryCast("冰甲术");
+                ResetAfkTimer();
+                return false;
             end
         elseif (MC.GetSpellId("霜甲术", nil, true) ~= nil) then
-            local membersWithoutFrostArmor = GetMembersWithoutAura("霜甲术", "Frost Armor");
-            for i = 1, table.getn(membersWithoutFrostArmor) do
-                local memberWithoutFrostArmor = membersWithoutFrostArmor[i];
-                if (MC.IsCastable("霜甲术", nil, memberWithoutFrostArmor, true)) then
-                    MC.Cast("霜甲术", nil, memberWithoutFrostArmor);
-                    ResetAfkTimer();
-                    return false;
-                end
+            if (not MC.GetUnitAuraByName("player", "霜甲术") and not MC.GetUnitAuraByName("player", "Frost Armor")) then
+                MC.TryCast("霜甲术");
+                ResetAfkTimer();
+                return false;
             end
         end
         return true;
