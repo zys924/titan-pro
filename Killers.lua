@@ -57,7 +57,7 @@ local function GetMembersWithDebuff(debuffType)
     end
     return results;
 end
-local function GetMembersWithoutBuff(buffName)
+local function GetMembersWithoutAura(auraNames)
     local results = {};
     for i = 0, GetNumPartyMembers() do
         local partyMember;
@@ -67,8 +67,14 @@ local function GetMembersWithoutBuff(buffName)
             partyMember = GetObject("party" .. i);
         end
         if (partyMember and not UnitIsDead(partyMember)) then
-            spellId = MC.GetUnitAuraByName(partyMember, buffName);
-            if (not spellId) then
+            local hasAura = false;
+            for j = 1, table.getn(auraNames) do
+                if (MC.GetUnitAuraByName(partyMember, auraNames[j])) then
+                    hasAura = true;
+                    break;
+                end
+            end
+            if (not hasAura) then
                 table.insert(results, partyMember);
             end
         end
@@ -78,11 +84,39 @@ end
 -- Killers
 MageKiller = {
     Preparation = function()
-        local result = true;
-        -- 给队伍里所有人加奥术智慧
-        local isArcaneIntellectLearnt = MC.GetSpellId("奥术智慧", nil, true) ~= nil;
-        if (isArcaneIntellectLearnt) then
-            local membersWithoutArcaneIntellect = GetMembersWithoutBuff("奥术智慧");
+        -- 给队伍里所有人加奥术智慧。
+        if (MC.GetSpellId("奥术智慧", nil, true) ~= nil) then
+            local membersWithoutArcaneIntellect = GetMembersWithoutAura("奥术智慧", "Arcane Intellect");
+            for i = 1, table.getn(membersWithoutArcaneIntellect) do
+                local memberWithoutArcaneIntellect = membersWithoutArcaneIntellect[i];
+                if (MC.IsCastable("奥术智慧", nil, memberWithoutArcaneIntellect, true)) then
+                    MC.Cast("奥术智慧", nil, memberWithoutArcaneIntellect);
+                    ResetAfkTimer();
+                    return false;
+                end
+            end
+        end
+        -- 给自己上冰甲/霜甲。
+        if (MC.GetSpellId("冰甲术", nil, true) ~= nil) then
+            local membersWithoutIceArmor = GetMembersWithoutAura("冰甲术", "Ice Armor");
+            for i = 1, table.getn(membersWithoutIceArmor) do
+                local memberWithoutIceArmor = membersWithoutIceArmor[i];
+                if (MC.IsCastable("冰甲术", nil, memberWithoutIceArmor, true)) then
+                    MC.Cast("冰甲术", nil, memberWithoutIceArmor);
+                    ResetAfkTimer();
+                    return false;
+                end
+            end
+        elseif (MC.GetSpellId("霜甲术", nil, true) ~= nil) then
+            local membersWithoutFrostArmor = GetMembersWithoutAura("霜甲术", "Frost Armor");
+            for i = 1, table.getn(membersWithoutFrostArmor) do
+                local memberWithoutFrostArmor = membersWithoutFrostArmor[i];
+                if (MC.IsCastable("霜甲术", nil, memberWithoutFrostArmor, true)) then
+                    MC.Cast("霜甲术", nil, memberWithoutFrostArmor);
+                    ResetAfkTimer();
+                    return false;
+                end
+            end
         end
     end,
     Action = function(npc)
