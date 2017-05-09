@@ -118,6 +118,7 @@ MageKiller = {
                 end
             end
         end
+        return true;
     end,
     Action = function(npc)
         -- 获取基本信息
