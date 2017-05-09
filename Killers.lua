@@ -187,6 +187,33 @@ MageKiller = {
     UpperDistanceCalculator = function() return 25; end,
 };
 PriestKiller = {
+    Preparation = function()
+        -- 给队伍里所有人加真言术：韧。
+        if (MC.GetSpellId("真言术：韧", nil, true) ~= nil) then
+            local membersWithoutFortitude = GetMembersWithoutAura("真言术：韧", "Power Word: Fortitude");
+            for i = 1, table.getn(membersWithoutFortitude) do
+                local memberWithoutFortitude = membersWithoutFortitude[i];
+                if (MC.IsCastable("真言术：韧", nil, memberWithoutFortitude, true)) then
+                    MC.Cast("真言术：韧", nil, memberWithoutFortitude);
+                    ResetAfkTimer();
+                    return false;
+                end
+            end
+        end
+        -- 给队伍里所有人加神圣之灵。
+        if (MC.GetSpellId("神圣之灵", nil, true) ~= nil) then
+            local membersWithoutDivineSpirit = GetMembersWithoutAura("神圣之灵", "Divine Spirit");
+            for i = 1, table.getn(membersWithoutDivineSpirit) do
+                local memberWithoutDivineSpirit = membersWithoutDivineSpirit[i];
+                if (MC.IsCastable("神圣之灵", nil, memberWithoutDivineSpirit, true)) then
+                    MC.Cast("神圣之灵", nil, memberWithoutDivineSpirit);
+                    ResetAfkTimer();
+                    return false;
+                end
+            end
+        end
+        return true;
+    end,
     Action = function(npc)
         if (MC.GetActualDistance("player", npc) < 5) then
             MC.StartAutoAttacking();
