@@ -380,6 +380,24 @@ WarriorKiller = {
                 return;
             end
         end
+        -- 压制可用优先压制。
+        if (MC.IsCastable("压制", nil, npc, true))  then
+            MC.Cast("压制", nil, npc);
+            ResetAfkTimer();
+            return;
+        end
+        -- 少于20%血优先施放斩杀。
+        if (npcHealth < 20 and MC.IsCastable("斩杀", nil, npc, true)) then
+            MC.Cast("斩杀", nil, npc);
+            ResetAfkTimer();
+            return;
+        end
+        -- 填充致死打击。
+        if (MC.IsCastable("致死打击", nil, npc, true)) then
+            MC.Cast("致死打击", nil, npc);
+            ResetAfkTimer();
+            return;
+        end
         -- 填充英勇打击。
         if (not isHamstringLearnt or not isRendLearnt or UnitMana("player") > 20) then
             if (MC.IsCastable("英勇打击", nil, npc, true)) then
